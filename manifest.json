@@ -1,0 +1,105 @@
+{
+  "name": "Smart Todo Pro",
+  "short_name": "Todo Pro",
+  "description": "আপনার স্মার্ট কাজের সহকারী",
+  "lang": "bn-BD",
+  "dir": "ltr",
+  "theme_color": "#4361ee",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "মোবাইল ভিউ"
+    },
+    {
+      "src": "/screenshots/tablet.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "ট্যাবলেট ভিউ"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "নতুন কাজ যোগ করুন",
+      "short_name": "যোগ করুন",
+      "description": "একটি নতুন কাজ যোগ করুন",
+      "url": "/?new=true",
+      "icons": [{ "src": "/icons/add-task.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "আজকের কাজ দেখুন",
+      "short_name": "আজকের কাজ",
+      "description": "আজকের সকল কাজ দেখুন",
+      "url": "/?view=today",
+      "icons": [{ "src": "/icons/today.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "ড্যাশবোর্ড",
+      "short_name": "ড্যাশবোর্ড",
+      "description": "ড্যাশবোর্ড দেখুন",
+      "url": "/?view=dashboard",
+      "icons": [{ "src": "/icons/dashboard.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

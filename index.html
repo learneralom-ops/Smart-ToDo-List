@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="bn" class="light-mode">
+<head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart Todo Pro - আপনার স্মার্ট কাজের সহকারী">
+    <title>Smart Todo Pro - আপনার স্মার্ট কাজের সহকারী</title>
+    
+    <!-- Firebase SDK -->
+    <script type="module" src="js/firebase-config.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dark-mode.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#4361ee">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h2>Smart Todo Pro</h2>
+            <p>লোড হচ্ছে...</p>
+        </div>
+    </div>
+
+    <!-- Auth Section -->
+    <div id="auth-section" class="section auth-section">
+        <div class="auth-container">
+            <!-- Login Form -->
+            <div class="auth-form active" id="login-form">
+                <div class="auth-header">
+                    <i class="fas fa-tasks"></i>
+                    <h1>Smart Todo Pro</h1>
+                    <p>আপনার স্মার্ট কাজের সহকারী</p>
+                </div>
+                
+                <form id="email-login-form">
+                    <div class="form-group">
+                        <label for="login-email">ইমেইল</label>
+                        <input type="email" id="login-email" placeholder="আপনার ইমেইল দিন" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">পাসওয়ার্ড</label>
+                        <div class="password-field">
+                            <input type="password" id="login-password" placeholder="আপনার পাসওয়ার্ড দিন" required>
+                            <button type="button" class="toggle-password" data-target="login-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="remember-me">
+                            <span>আমাকে মনে রাখুন</span>
+                        </label>
+                        <a href="#" id="forgot-password-link">পাসওয়ার্ড ভুলে গেছেন?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-sign-in-alt"></i> লগইন করুন
+                    </button>
+                </form>
+                
+                <div class="divider">
+                    <span>অথবা</span>
+                </div>
+                
+                <div class="social-login">
+                    <button id="google-login-btn" class="btn btn-google">
+                        <i class="fab fa-google"></i> Google দিয়ে লগইন
+                    </button>
+                    
+                    <button id="phone-login-btn" class="btn btn-phone">
+                        <i class="fas fa-phone"></i> ফোন নম্বর দিয়ে লগইন
+                    </button>
+                </div>
+                
+                <div class="auth-footer">
+                    <p>অ্যাকাউন্ট নেই? <a href="#" id="show-signup">সাইন আপ করুন</a></p>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form" id="signup-form">
+                <div class="auth-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h1>নতুন অ্যাকাউন্ট তৈরি করুন</h1>
+                </div>
+                
+                <form id="email-signup-form">
+                    <div class="form-group">
+                        <label for="signup-name">নাম</label>
+                        <input type="text" id="signup-name" placeholder="আপনার পুরো নাম" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-email">ইমেইল</label>
+                        <input type="email" id="signup-email" placeholder="আপনার ইমেইল" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password">পাসওয়ার্ড</label>
+                        <div class="password-field">
+                            <input type="password" id="signup-password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" required>
+                            <button type="button" class="toggle-password" data-target="signup-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">পাসওয়ার্ড নিশ্চিত করুন</label>
+                        <input type="password" id="confirm-password" placeholder="পাসওয়ার্ড আবার দিন" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i> অ্যাকাউন্ট তৈরি করুন
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="#" id="show-login">লগইন করুন</a></p>
+                </div>
+            </div>
+
+            <!-- Phone Login Form -->
+            <div class="auth-form" id="phone-auth-form">
+                <div class="auth-header">
+                    <i class="fas fa-phone"></i>
+                    <h1>ফোন নম্বর দিয়ে লগইন</h1>
+                </div>
+                
+                <form id="phone-form">
+                    <div class="form-group">
+                        <label for="phone-number">ফোন নম্বর</label>
+                        <div class="phone-input">
+                            <select id="country-code">
+                                <option value="+880">+880 (BD)</option>
+                                <option value="+91">+91 (IN)</option>
+                                <option value="+1">+1 (US)</option>
+                            </select>
+                            <input type="tel" id="phone-number" placeholder="১ম XXXXXXXXXX" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group otp-group hidden">
+                        <label for="otp-code">OTP কোড</label>
+                        <input type="text" id="otp-code" placeholder="৬ ডিজিট OTP কোড দিন" maxlength="6">
+                    </div>
+                    
+                    <button type="submit" id="phone-submit-btn" class="btn btn-primary btn-full">
+                        <i class="fas fa-paper-plane"></i> OTP পাঠান
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <a href="#" id="back-to-login"><i class="fas fa-arrow-left"></i> ফিরে যান</a>
+                </div>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="auth-form" id="forgot-password-form">
+                <div class="auth-header">
+                    <i class="fas fa-key"></i>
+                    <h1>পাসওয়ার্ড রিসেট করুন</h1>
+                </div>
+                
+                <form id="reset-password-form">
+                    <div class="form-group">
+                        <label for="reset-email">ইমেইল</label>
+                        <input type="email" id="reset-email" placeholder="আপনার ইমেইল দিন" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-paper-plane"></i> রিসেট লিংক পাঠান
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <a href="#" id="back-from-reset"><i class="fas fa-arrow-left"></i> ফিরে যান</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Section -->
+    <div id="app-section" class="section app-section hidden">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <button class="menu-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <i class="fas fa-tasks"></i>
+                    <span>Smart Todo Pro</span>
+                </div>
+            </div>
+            
+            <div class="nav-center">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="global-search" placeholder="কাজ খুঁজুন...">
+                    <button class="clear-search hidden">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <button class="nav-btn" id="calendar-view-btn" title="ক্যালেন্ডার ভিউ">
+                    <i class="fas fa-calendar-alt"></i>
+                </button>
+                
+                <button class="nav-btn" id="filter-btn" title="ফিল্টার">
+                    <i class="fas fa-filter"></i>
+                </button>
+                
+                <button class="nav-btn" id="bulk-edit-btn" title="বাল্ক এডিট">
+                    <i class="fas fa-edit"></i>
+                </button>
+                
+                <div class="theme-toggle">
+                    <input type="checkbox" id="dark-mode-toggle" hidden>
+                    <label for="dark-mode-toggle" class="theme-switch">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                    </label>
+                </div>
+                
+                <div class="user-menu">
+                    <button class="user-avatar" id="user-menu-btn">
+                        <img id="user-avatar" src="assets/placeholder.png" alt="User">
+                    </button>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <div class="user-info">
+                            <img id="dropdown-avatar" src="assets/placeholder.png" alt="User">
+                            <div>
+                                <h4 id="user-name">ইউজার নাম</h4>
+                                <p id="user-email">email@example.com</p>
+                            </div>
+                        </div>
+                        <a href="#" class="dropdown-item" id="profile-btn">
+                            <i class="fas fa-user"></i> প্রোফাইল
+                        </a>
+                        <a href="#" class="dropdown-item" id="settings-btn">
+                            <i class="fas fa-cog"></i> সেটিংস
+                        </a>
+                        <a href="#" class="dropdown-item" id="help-btn">
+                            <i class="fas fa-question-circle"></i> সাহায্য
+                        </a>
+                        <hr>
+                        <a href="#" class="dropdown-item logout-btn" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> লগআউট
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-tasks"></i> মেনু</h3>
+                <button class="close-sidebar" id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" data-view="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>ড্যাশবোর্ড</span>
+                </a>
+                
+                <a href="#" class="menu-item" data-view="all-tasks">
+                    <i class="fas fa-list-check"></i>
+                    <span>সকল কাজ</span>
+                </a>
+                
+                <a href="#" class="menu-item" data-view="today">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>আজকের কাজ</span>
+                    <span class="badge" id="today-count">0</span>
+                </a>
+                
+                <a href="#" class="menu-item" data-view="upcoming">
+                    <i class="fas fa-calendar-week"></i>
+                    <span>আসন্ন কাজ</span>
+                    <span class="badge" id="upcoming-count">0</span>
+                </a>
+                
+                <a href="#" class="menu-item" data-view="overdue">
+                    <i class="fas fa-clock"></i>
+                    <span>মেয়াদোত্তীর্ণ</span>
+                    <span class="badge badge-danger" id="overdue-count">0</span>
+                </a>
+                
+                <a href="#" class="menu-item" data-view="important">
+                    <i class="fas fa-star"></i>
+                    <span>গুরুত্বপূর্ণ</span>
+                    <span class="badge" id="important-count">0</span>
+                </a>
+                
+                <div class="menu-section">
+                    <h4>ক্যাটেগরি</h4>
+                    <div id="category-list">
+                        <!-- Categories will be added dynamically -->
+                    </div>
+                    <button class="add-category" id="add-category-btn">
+                        <i class="fas fa-plus"></i> নতুন ক্যাটেগরি
+                    </button>
+                </div>
+                
+                <div class="menu-section">
+                    <h4>ফিল্টার</h4>
+                    <select class="filter-select" id="priority-filter">
+                        <option value="">সকল গুরুত্ব</option>
+                        <option value="high">উচ্চ গুরুত্ব</option>
+                        <option value="medium">মধ্যম গুরুত্ব</option>
+                        <option value="low">নিম্ন গুরুত্ব</option>
+                    </select>
+                    
+                    <select class="filter-select" id="status-filter">
+                        <option value="">সকল অবস্থা</option>
+                        <option value="pending">বাকি</option>
+                        <option value="in-progress">চলমান</option>
+                        <option value="completed">সম্পন্ন</option>
+                    </select>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="storage-info">
+                    <div class="storage-bar">
+                        <div class="storage-fill" id="storage-fill"></div>
+                    </div>
+                    <small>স্টোরেজ: <span id="storage-text">0/100KB</span></small>
+                </div>
+                <div class="sync-status" id="sync-status">
+                    <i class="fas fa-wifi"></i> <span>সিঙ্কড</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <!-- Dashboard View -->
+            <div class="view active" id="dashboard-view">
+                <div class="dashboard-header">
+                    <h1>ড্যাশবোর্ড</h1>
+                    <p id="welcome-text">স্বাগতম!</p>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon total">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-tasks">0</h3>
+                            <p>মোট কাজ</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon completed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="completed-tasks">0</h3>
+                            <p>সম্পন্ন কাজ</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pending-tasks">0</h3>
+                            <p>বাকি কাজ</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon streak">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="streak-days">0</h3>
+                            <p>দিনের স্ট্রিক</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Productivity Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>উৎপাদনশীলতা ট্রেন্ড</h3>
+                        <select id="chart-period">
+                            <option value="7">সপ্তাহ</option>
+                            <option value="30">মাস</option>
+                            <option value="90">কোয়ার্টার</option>
+                        </select>
+                    </div>
+                    <canvas id="productivity-chart"></canvas>
+                </div>
+                
+                <!-- Today's Tasks -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3><i class="fas fa-calendar-day"></i> আজকের কাজ</h3>
+                        <a href="#" class="view-all" data-view="today">সব দেখুন</a>
+                    </div>
+                    <div class="task-list" id="today-tasks-list">
+                        <!-- Today's tasks will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Upcoming Tasks -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h3><i class="fas fa-calendar-week"></i> আসন্ন কাজ</h3>
+                        <a href="#" class="view-all" data-view="upcoming">সব দেখুন</a>
+                    </div>
+                    <div class="task-list" id="upcoming-tasks-list">
+                        <!-- Upcoming tasks will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Tasks View -->
+            <div class="view" id="all-tasks-view">
+                <div class="view-header">
+                    <h1>সকল কাজ</h1>
+                    <div class="view-actions">
+                        <button class="btn btn-primary" id="add-task-btn">
+                            <i class="fas fa-plus"></i> নতুন কাজ
+                        </button>
+                        <button class="btn btn-secondary" id="sort-tasks-btn">
+                            <i class="fas fa-sort"></i> সাজান
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="tasks-container">
+                    <!-- All tasks will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Add/Edit Task Modal -->
+            <div class="modal" id="task-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modal-title">নতুন কাজ যোগ করুন</h2>
+                        <button class="close-modal" id="close-task-modal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="task-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="task-title">শিরোনাম *</label>
+                                <input type="text" id="task-title" placeholder="কাজের শিরোনাম" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="task-category">ক্যাটেগরি</label>
+                                <div class="select-with-add">
+                                    <select id="task-category">
+                                        <option value="">ক্যাটেগরি নির্বাচন করুন</option>
+                                    </select>
+                                    <button type="button" class="add-option" id="quick-add-category">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="task-description">বিবরণ</label>
+                            <textarea id="task-description" placeholder="কাজের বিস্তারিত বিবরণ" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="task-due-date">শেষ তারিখ</label>
+                                <input type="date" id="task-due-date">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="task-due-time">শেষ সময়</label>
+                                <input type="time" id="task-due-time">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="task-priority">গুরুত্ব</label>
+                                <div class="priority-buttons">
+                                    <button type="button" class="priority-btn low" data-priority="low">
+                                        <i class="fas fa-arrow-down"></i> নিম্ন
+                                    </button>
+                                    <button type="button" class="priority-btn medium" data-priority="medium">
+                                        <i class="fas fa-equals"></i> মধ্যম
+                                    </button>
+                                    <button type="button" class="priority-btn high active" data-priority="high">
+                                        <i class="fas fa-arrow-up"></i> উচ্চ
+                                    </button>
+                                </div>
+                                <input type="hidden" id="task-priority" value="high">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="task-status">অবস্থা</label>
+                                <select id="task-status">
+                                    <option value="pending">বাকি</option>
+                                    <option value="in-progress">চলমান</option>
+                                    <option value="completed">সম্পন্ন</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="task-repeat">পুনরাবৃত্তি</label>
+                            <select id="task-repeat">
+                                <option value="none">কোনটিই না</option>
+                                <option value="daily">দৈনিক</option>
+                                <option value="weekly">সাপ্তাহিক</option>
+                                <option value="monthly">মাসিক</option>
+                                <option value="yearly">বাৎসরিক</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="task-important">
+                                <span>গুরুত্বপূর্ণ হিসেবে চিহ্নিত করুন</span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="task-reminder">
+                                <span>রিমাইন্ডার সেট করুন</span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancel-task-btn">
+                                বাতিল করুন
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="save-task-btn">
+                                সংরক্ষণ করুন
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Calendar View -->
+            <div class="view" id="calendar-view">
+                <div class="calendar-header">
+                    <h1>ক্যালেন্ডার</h1>
+                    <div class="calendar-controls">
+                        <button id="prev-month">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h2 id="current-month">জানুয়ারি ২০২৪</h2>
+                        <button id="next-month">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="calendar"></div>
+            </div>
+        </main>
+
+        <!-- Add Task Floating Button -->
+        <button class="floating-btn" id="floating-add-btn">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container"></div>
+
+        <!-- Undo Delete Toast -->
+        <div class="undo-toast hidden" id="undo-toast">
+            <span>কাজ মুছে ফেলা হয়েছে</span>
+            <button class="btn btn-small" id="undo-delete-btn">পূর্বাবস্থায় আনুন</button>
+        </div>
+
+        <!-- Bulk Edit Bar -->
+        <div class="bulk-edit-bar hidden" id="bulk-edit-bar">
+            <div class="bulk-info">
+                <span id="selected-count">0 টি নির্বাচিত</span>
+            </div>
+            <div class="bulk-actions">
+                <button class="bulk-btn" id="bulk-complete">
+                    <i class="fas fa-check"></i> সম্পন্ন করুন
+                </button>
+                <button class="bulk-btn" id="bulk-delete">
+                    <i class="fas fa-trash"></i> মুছুন
+                </button>
+                <button class="bulk-btn" id="bulk-cancel">
+                    <i class="fas fa-times"></i> বাতিল করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/todo-manager.js"></script>
+    <script type="module" src="js/ai-features.js"></script>
+    <script type="module" src="js/notification.js"></script>
+    <script type="module" src="js/offline-sync.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/ui-components.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
